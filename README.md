@@ -41,3 +41,7 @@ The new `rename` method takes two parameters:
  * New name of the link
 
 N.B.: with this method, both the label and the title of the top link will be renamed.
+
+### Extra
+
+Provides the `removeLinkByUrl` for Magento < 1.3.0

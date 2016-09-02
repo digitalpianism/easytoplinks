@@ -53,18 +53,22 @@ class DigitalPianism_EasyToplinks_Block_Page_Template_Links extends Mage_Page_Bl
     }
 
     /**
-     * Remove an item by url
+     * Remove an item by url for Magento < 1.3.0
      * @param $url
      * @return $this
      */
-    public function removeByUrl($url)
+    public function removeLinkByUrl($url)
     {
-        foreach ($this->_links as $k => $v) {
-            if ($v->getUrl() == $url) {
-                unset($this->_links[$k]);
+        if (version_compare(Mage::getVersion(),"1.3.0","<")) {
+            foreach ($this->_links as $k => $v) {
+                if ($v->getUrl() == $url) {
+                    unset($this->_links[$k]);
+                }
             }
-        }
 
-        return $this;
+            return $this;
+        } else {
+            parent::removeLinkByUrl($url);
+        }
     }
 }
