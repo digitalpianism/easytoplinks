@@ -51,4 +51,20 @@ class DigitalPianism_EasyToplinks_Block_Page_Template_Links extends Mage_Page_Bl
 
         return $this;
     }
+
+    /**
+     * Remove an item by url
+     * @param $url
+     * @return $this
+     */
+    public function removeByUrl($url)
+    {
+        foreach ($this->_links as $k => $v) {
+            if ($v->getUrl() == $url) {
+                unset($this->_links[$k]);
+            }
+        }
+
+        return $this;
+    }
 }
