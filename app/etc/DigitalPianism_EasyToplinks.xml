@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<DigitalPianism_EasyToplinks>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Mage_Page/>
+			</depends>
+		</DigitalPianism_EasyToplinks>
+	</modules>
+</config>

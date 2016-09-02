@@ -1,0 +1,2 @@
+app/code/local/DigitalPianism/EasyToplinks
+app/etc/modules/DigitalPianism_EasyToplinks.xml

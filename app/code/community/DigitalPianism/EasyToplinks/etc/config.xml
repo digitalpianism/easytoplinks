@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <DigitalPianism_EasyToplinks>
+            <version>0.0.2</version>
+        </DigitalPianism_EasyToplinks>
+    </modules>
+    <global>
+        <blocks>
+            <page>
+                <!--
+                Mage_Page_Block_Template_Links
+                -->
+                <rewrite>
+                    <template_links>DigitalPianism_EasyToplinks_Block_Page_Template_Links</template_links>
+                </rewrite>
+            </page>
+        </blocks>
+    </global>
+</config>

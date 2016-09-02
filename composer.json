@@ -1,0 +1,16 @@
+{
+  "name": "digitalpianism/easytoplinks",
+  "type": "magento-module",
+  "license":"OSL-3.0",
+  "description":"A small module that provides top links management layout actions.",
+  "require": {
+    "php": ">=5.3",
+    "magento-hackathon/magento-composer-installer": "*"
+  },
+  "authors":[
+    {
+      "name":"Raphael Petrini",
+      "email":"contact@digital-pianism.com"
+    }
+  ]
+}
