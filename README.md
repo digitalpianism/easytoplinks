@@ -10,7 +10,7 @@ Instead of having to remove then re-add the top link.
 
 ```
 <reference name="top.links">
-        <action method="setPosition">
+    <action method="setPosition">
         <url helper="customer/getLoginUrl"/>
         <position>1</position>
     </action>
