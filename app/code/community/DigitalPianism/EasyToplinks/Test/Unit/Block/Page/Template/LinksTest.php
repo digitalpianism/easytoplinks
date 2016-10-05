@@ -1,90 +1,133 @@
 <?php
 
-/**
- * Class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest
- */
-class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest extends \PHPUnit_Framework_TestCase {
-
+class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest extends \PHPUnit_Framework_TestCase
+{
     /**
-     * New position wanted
+     * @dataProvider validPositionsProvider
      */
-    const POSITION_TEST_VALUE = 20;
-
-    /**
-     * New label/title wanted
-     */
-    const NAME_TEST_VALUE = "test2";
-
-    /**
-     * Test the setPosition method
-     */
-    public function testSetPosition()
+    public function testSetValidPosition($url, $position)
     {
-        $block = $this->_getBlock();
+        $block = $this->_createTemplateLinksBlockWithLink();
 
-        $this->_addLink($block);
+        $block->setPosition($url, $position);
 
-        // Change the position to the wanted value
-        $block->setPosition('/test', self::POSITION_TEST_VALUE);
-
-        // Compare the key to the wanted value
-        $this->assertEquals($this->_getFirstLinkPosition($block), self::POSITION_TEST_VALUE);
+        $this->assertEquals($this->_getThePositionFromTheFirstLinkOfTheBlock($block), $position);
     }
 
     /**
-     * Test the rename method
+     * @dataProvider invalidPositionsProvider
      */
-    public function testRename()
+    public function testSetInvalidPosition($url, $position)
     {
-        $block = $this->_getBlock();
+        $block = $this->_createTemplateLinksBlockWithLink();
 
-        $this->_addLink($block);
+        $block->setPosition($url, $position);
 
-        // Rename the link
-        $block->rename('/test', self::NAME_TEST_VALUE);
+        $this->assertNotEquals($this->_getThePositionFromTheFirstLinkOfTheBlock($block), $position);
+    }
 
-        // Get the link
-        $link = $this->_getFirstLink($block);
+    /**
+     * @dataProvider validLabelProvider
+     */
+    public function testValidRename($url, $label)
+    {
+        $block = $this->_createTemplateLinksBlockWithLink();
 
-        // Compare both title and label
-        $this->assertEquals($link->getLabel(), self::NAME_TEST_VALUE);
-        $this->assertEquals($link->getTitle(), self::NAME_TEST_VALUE);
+        $block->rename($url, $label);
+
+        $link = $this->_getTheFirstLinkFromTheBlock($block);
+
+        $this->assertEquals($link->getLabel(), $label);
+        $this->assertEquals($link->getTitle(), $label);
 
     }
 
     /**
-     * Create the links block
+     * @dataProvider invalidLabelProvider
      */
-    protected function _getBlock()
+    public function testInvalidRename($url, $label)
     {
-        return new DigitalPianism_EasyToplinks_Block_Page_Template_Links();
+        $block = $this->_createTemplateLinksBlockWithLink();
+
+        $block->rename($url, $label);
+
+        $link = $this->_getTheFirstLinkFromTheBlock($block);
+
+        $this->assertNotEquals($link->getLabel(), $label);
+        $this->assertNotEquals($link->getTitle(), $label);
+
     }
 
-    /**
-     * Add a link with name and title to test
-     */
-    protected function _addLink($block)
+    public function validPositionsProvider()
     {
-        $block->addLink(
-            'test',
-            '/test',
-            'test'
+        return array(
+            'normal behavior'       => array('/test-url', 20),
+            'string position'       => array('/test-url', '20'),
         );
     }
 
-    /**
-     * Get the first link from the block
-     */
-    protected function _getFirstLink($block)
+    public function invalidPositionsProvider()
+    {
+        return array(
+            'null position'         => array('/test-url', null),
+            'bool position'         => array('/test-url', false),
+            'non numeric position'  => array('/test-url', 'foo'),
+            'negative position'     => array('/test-url', -1),
+            'array position'        => array('/test-url', array()),
+            'null url'              => array(null, 20),
+            'bool url'              => array(false, 20),
+            'numeric url'           => array(20, 20),
+            'array url'             => array(array(), 20),
+        );
+    }
+
+    public function validLabelProvider()
+    {
+        return array(
+            'normal behavior'       => array('/test-url', 'New Label'),
+            'numeric label'         => array('/test-url', 10),
+            'negative label'        => array('/test-url', -1),
+        );
+    }
+
+    public function invalidLabelProvider()
+    {
+        return array(
+            'array label'           => array('/test-url', array()),
+            'null url'              => array(null, 'New Label'),
+            'bool url'              => array(false, 'New Label'),
+            'numeric url'           => array(20, 'New Label'),
+            'array url'             => array(array(), 'New Label'),
+            'null label'            => array('/test-url', null),
+            'boolean label'         => array('/test-url', false),
+        );
+    }
+
+    private function _createTemplateLinksBlockWithLink()
+    {
+        $block = new DigitalPianism_EasyToplinks_Block_Page_Template_Links();
+
+        $this->_addLink($block);
+
+        return $block;
+    }
+
+    private function _addLink(DigitalPianism_EasyToplinks_Block_Page_Template_Links $block)
+    {
+        $block->addLink(
+            'Test Label',
+            '/test-url',
+            'Test Title'
+        );
+    }
+
+    private function _getTheFirstLinkFromTheBlock(DigitalPianism_EasyToplinks_Block_Page_Template_Links $block)
     {
         $links = $block->getLinks();
         return current($links);
     }
 
-    /**
-     * Get the first link position from the block
-     */
-    protected function _getFirstLinkPosition($block)
+    private function _getThePositionFromTheFirstLinkOfTheBlock(DigitalPianism_EasyToplinks_Block_Page_Template_Links $block)
     {
         $links = $block->getLinks();
         return key($links);
