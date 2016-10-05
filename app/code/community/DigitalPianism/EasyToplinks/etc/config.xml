@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DigitalPianism_EasyToplinks>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </DigitalPianism_EasyToplinks>
     </modules>
     <global>
