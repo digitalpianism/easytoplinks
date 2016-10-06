@@ -14,16 +14,39 @@ class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest extend
         $this->assertEquals($this->_getThePositionFromTheFirstLinkOfTheBlock($block), $position);
     }
 
+    public function validPositionsProvider()
+    {
+        return array(
+            'normal behavior'       => array('/test-url', 20),
+            'string position'       => array('/test-url', '20'),
+        );
+    }
+
     /**
      * @dataProvider invalidPositionsProvider
+     * @expectedException Exception
+     * @expectedExceptionMessageRegExp /Unable to change position \w+/
      */
     public function testSetInvalidPosition($url, $position)
     {
         $block = $this->_createTemplateLinksBlockWithLink();
 
         $block->setPosition($url, $position);
+    }
 
-        $this->assertNotEquals($this->_getThePositionFromTheFirstLinkOfTheBlock($block), $position);
+    public function invalidPositionsProvider()
+    {
+        return array(
+            'null position'         => array('/test-url', null),
+            'bool position'         => array('/test-url', false),
+            'non numeric position'  => array('/test-url', 'foo'),
+            'negative position'     => array('/test-url', -1),
+            'array position'        => array('/test-url', array()),
+            'null url'              => array(null, 20),
+            'bool url'              => array(false, 20),
+            'numeric url'           => array(20, 20),
+            'array url'             => array(array(), 20),
+        );
     }
 
     /**
@@ -42,45 +65,6 @@ class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest extend
 
     }
 
-    /**
-     * @dataProvider invalidLabelProvider
-     */
-    public function testInvalidRename($url, $label)
-    {
-        $block = $this->_createTemplateLinksBlockWithLink();
-
-        $block->rename($url, $label);
-
-        $link = $this->_getTheFirstLinkFromTheBlock($block);
-
-        $this->assertNotEquals($link->getLabel(), $label);
-        $this->assertNotEquals($link->getTitle(), $label);
-
-    }
-
-    public function validPositionsProvider()
-    {
-        return array(
-            'normal behavior'       => array('/test-url', 20),
-            'string position'       => array('/test-url', '20'),
-        );
-    }
-
-    public function invalidPositionsProvider()
-    {
-        return array(
-            'null position'         => array('/test-url', null),
-            'bool position'         => array('/test-url', false),
-            'non numeric position'  => array('/test-url', 'foo'),
-            'negative position'     => array('/test-url', -1),
-            'array position'        => array('/test-url', array()),
-            'null url'              => array(null, 20),
-            'bool url'              => array(false, 20),
-            'numeric url'           => array(20, 20),
-            'array url'             => array(array(), 20),
-        );
-    }
-
     public function validLabelProvider()
     {
         return array(
@@ -90,16 +74,28 @@ class DigitalPianism_EasyToplinks_Test_Unit_Block_Page_Template_LinksTest extend
         );
     }
 
+    /**
+     * @dataProvider invalidLabelProvider
+     * @expectedException Exception
+     * @expectedExceptionMessageRegExp /Unable to rename top link \w+/
+     */
+    public function testInvalidRename($url, $label)
+    {
+        $block = $this->_createTemplateLinksBlockWithLink();
+
+        $block->rename($url, $label);
+    }
+
     public function invalidLabelProvider()
     {
         return array(
+            'null label'            => array('/test-url', null),
+            'boolean label'         => array('/test-url', false),
             'array label'           => array('/test-url', array()),
             'null url'              => array(null, 'New Label'),
             'bool url'              => array(false, 'New Label'),
             'numeric url'           => array(20, 'New Label'),
             'array url'             => array(array(), 'New Label'),
-            'null label'            => array('/test-url', null),
-            'boolean label'         => array('/test-url', false),
         );
     }
 

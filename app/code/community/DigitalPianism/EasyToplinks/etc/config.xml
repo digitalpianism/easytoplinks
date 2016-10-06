@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DigitalPianism_EasyToplinks>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </DigitalPianism_EasyToplinks>
     </modules>
     <global>
@@ -16,5 +16,10 @@
                 </rewrite>
             </page>
         </blocks>
+        <helpers>
+            <easytoplinks>
+                <class>DigitalPianism_EasyToplinks_Helper</class>
+            </easytoplinks>
+        </helpers>
     </global>
 </config>
